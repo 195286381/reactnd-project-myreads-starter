@@ -1,5 +1,5 @@
 import React from 'react'
-
+import { Link } from 'react-router-dom'
 const Main = () => (
   <div className="list-books">
     <div className="list-books-title">
@@ -157,9 +157,7 @@ const Main = () => (
       </div>
     </div>
     <div className="open-search">
-      {
-        /*<a onClick={() => this.setState({ showSearchPage: true })}>Add a book</a>*/
-      }<a>Add a book</a>
+      <Link to="/search" />
     </div>
   </div>
 )
