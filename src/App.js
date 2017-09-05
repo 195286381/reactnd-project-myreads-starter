@@ -8,6 +8,18 @@ import Search from './pages/Search'
 class BooksApp extends React.Component {
   constructor() {
     super(...arguments)
+
+    this.state = {
+      books: null,
+    }
+  }
+
+  // 挂载完成后加载书架信息.
+  componentDidMount() {
+    BooksAPI.getAll().then(data => {
+      debugger;
+      this.setState({books: data})
+    })
   }
 
   render() {
