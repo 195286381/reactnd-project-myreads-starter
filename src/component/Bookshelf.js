@@ -1,5 +1,4 @@
 import React from 'react'
-
 import Book from './Book'
 
 const Bookshelf = ({books, bookshelfTitle}) => (
@@ -8,11 +7,11 @@ const Bookshelf = ({books, bookshelfTitle}) => (
     <div className="bookshelf-books">
       <ol className="books-grid">
         { 
-	  books.map((book) => (
+	        books.map((book) => (
             <li key={Math.random()}>
               <Book book={book} />
             </li>
-	  ))
+	        ))
         }
       </ol>
     </div>
