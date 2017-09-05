@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 import Bookshelf from '../component/Bookshelf'
 
 class Main extends Component {
   static propTypes = {
-    curentlyReading: PropTypes.array,
+    currentlyReading: PropTypes.array,
     wantToRead: PropTypes.array,
     read: PropTypes.array,
+    updateBookState: PropTypes.func,
   }
 
   constructor() {
@@ -22,9 +24,9 @@ class Main extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <Bookshelf books={this.props.curentlyReading} bookshelfTitle="Currently Reading" />
-            <Bookshelf books={this.props.wantToRead} bookshelfTitle="Want to Read" />
-            <Bookshelf books={this.props.read} bookshelfTitle="Read" />
+            <Bookshelf books={this.props.currentlyReading} updateBookState={this.props.updateBookState} bookshelfTitle="Currently Reading" />
+            <Bookshelf books={this.props.wantToRead} updateBookState={this.props.updateBookState} bookshelfTitle="Want to Read" />
+            <Bookshelf books={this.props.read} updateBookState={this.props.updateBookState} bookshelfTitle="Read" />
           </div>
         </div>
         <div className="open-search">

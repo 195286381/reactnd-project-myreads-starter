@@ -12,16 +12,13 @@ class Book extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  hanldeChange(e) {
-    // const updateBookState = this.props.updateBookState
-    // const bookId = this.props.book.bookId
-    // const checkedValue = e.target.value
-    // switch(checkValue) {
-    //   case 'currentlyReading': {
-    //     updateBookState
-    //   }
-    //   break;
-    // }
+  handleChange(e) {
+    debugger;
+    const {book, updateBookState} = this.props
+    const shelf = e.target.value
+    if (book.shelf !== shelf) {
+      updateBookState(book, shelf)
+    }
   }
 
   render() {
@@ -29,9 +26,9 @@ class Book extends Component {
     return (
       <div className="book">
         <div className="book-top">
-          <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: book.title}}></div>
-          <div className="book-shelf-changer" onClick={this.handleChange}>
-            <select onChange={this.props.updateBookChange}>
+          <div className="book-cover" style={{ width: 128, height: 188, backgroundImage: book.imageLinks.smallThumbnail }}></div>
+          <div className="book-shelf-changer">
+            <select onChange={this.handleChange} value="none">
               <option value="none" disabled>Move to...</option>
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>

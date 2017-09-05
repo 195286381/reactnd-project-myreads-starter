@@ -10,17 +10,60 @@ class BooksApp extends React.Component {
     super(...arguments)
 
     this.state = {
-        curentlyReading: [],
+        books: [],
+        currentlyReading: [],
         wantToRead: [],
         read: []
     }
 
     this.updateBookState = this.updateBookState.bind(this)
+    this.findBookById = this.findBookById.bind(this)
   }
 
+  findBookById(id) {
+    var book = null
+    const { books } = this.state
+    books.some(bk => {
+      if (bk.id === id) {
+        book = bk
+        return true
+      }
+    })
+    return book;
+  }
   // update book state when click
-  updateBookState(bookId, state) {
-    // change book state and reload state
+  updateBookState(book, shelf) {
+    debugger
+    const { books } = this.state
+    const currentlyReading = []
+    const wantToRead = []
+    const read = []
+
+    BooksAPI
+      .update(book, shelf)
+      .then(res => {
+        debugger
+        if (res) {
+          res.currentlyReading.forEach(id => {
+            const bk = this.findBookById(id)
+            currentlyReading.push(bk)
+          })
+          res.wantToRead.forEach(id => {
+            const bk = this.findBookById(id)
+            wantToRead.push(bk)
+          })
+          res.read.forEach(id => {
+            const bk = this.findBookById(id)
+            read.push(bk)
+          })
+
+          this.setState({
+            currentlyReading: currentlyReading,
+            wantToRead: wantToRead,
+            read: read,
+          })
+        }
+      })
   }
 
 
@@ -29,38 +72,53 @@ class BooksApp extends React.Component {
     
     BooksAPI.getAll().then(data => {
       let books = {
-        curentlyReading: [],
+        books: [],
+        currentlyReading: [],
         wantToRead: [],
-        read: []
-      };
-      switch() {
-        case 1: {
-
-        }
-        break
-        case 2: {
-
-        }
-        break
-        case 3: {
-
-        }
-        break
+        read: [],
       }
-      this.setState({...books})
+
+      books.books =data;
+
+      data.forEach(book => {
+        switch (book.shelf) {
+          case 'currentlyReading': {
+            books.currentlyReading.push(book)
+          }
+          break
+          case 'wantToRead': {
+            books.wantToRead.push(book)
+          }
+          break
+          case 'read': {
+            books.read.push(book)
+          }
+        }
+      })
+      
+      this.setState({
+        books: books.books,
+        currentlyReading: books.currentlyReading,
+        wantToRead: books.wantToRead,
+        read: books.read,
+      })
     })
+
   }
 
   render() {
+    console.dir(this.state)
+    const {currentlyReading, wantToRead, read} = this.state
     return (
       <Router>
         <div className="app">
           <Route exact path='/' render={
             () => (
               <Main 
-                curentlyReading={this.state.curentlyReading}
-                wantToRead={this.state.wantToRead}
-                read={this.state.read}
+                currentlyReading={currentlyReading}
+                wantToRead={wantToRead}
+                read={read}
+                updateBookState={this.updateBookState}
               />
             )
           } />
