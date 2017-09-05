@@ -66,10 +66,8 @@ class BooksApp extends React.Component {
       })
   }
 
-
   componentDidMount() {
     // when Component did mounted, get the response from API and init the bookshelf.
-    
     BooksAPI.getAll().then(data => {
       let books = {
         books: [],
@@ -95,7 +93,7 @@ class BooksApp extends React.Component {
           }
         }
       })
-      
+      debugger
       this.setState({
         books: books.books,
         currentlyReading: books.currentlyReading,
@@ -122,7 +120,11 @@ class BooksApp extends React.Component {
               />
             )
           } />
-          <Route exact path='/search' component={Search} />
+          <Route exact path='/search' render={
+            () => (
+              <Search />
+            )
+          } />
         </div>
       </Router>
     )
