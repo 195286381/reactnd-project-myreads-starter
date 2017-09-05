@@ -10,28 +10,65 @@ class BooksApp extends React.Component {
     super(...arguments)
 
     this.state = {
-      books: null,
+        curentlyReading: [],
+        wantToRead: [],
+        read: []
     }
+
+    this.updateBookState = this.updateBookState.bind(this)
   }
 
-  // 挂载完成后加载书架信息.
+  // update book state when click
+  updateBookState(bookId, state) {
+    // change book state and reload state
+  }
+
+
   componentDidMount() {
-    BooksAPI.getAll().then(data => {
-      debugger;
-      this.setState({books: data})
-    })
+    // when Component did mounted, get the response from API and init the bookshelf.
+    // init the bookshelf.
+    // BooksAPI.getAll().then(data => {
+    //   let books = {
+    //     curentlyReading: [],
+    //     wantToRead: [],
+    //     read: []
+    //   };
+    //   switch() {
+    //     case 1: {
+
+    //     }
+    //     break
+    //     case 2: {
+
+    //     }
+    //     break
+    //     case 3: {
+
+    //     }
+    //     break
+    //   }
+    //   this.setState({...books})
+    // })
   }
 
   render() {
     return (
       <Router>
         <div className="app">
-          <Route exact path='/' component={Main}></Route>
-          <Route exact path='/search' component={Search}></Route>
+          <Route exact path='/' render={
+            () => (
+              <Main 
+                curentlyReading={this.state.curentlyReading}
+                wantToRead={this.state.wantToRead}
+                read={this.state.read}
+              />
+            )
+          } />
+          <Route exact path='/search' component={Search} />
         </div>
       </Router>
     )
   }
 }
 
-export default BooksApp
+export default BooksApp 
