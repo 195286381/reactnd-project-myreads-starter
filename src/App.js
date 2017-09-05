@@ -26,29 +26,29 @@ class BooksApp extends React.Component {
 
   componentDidMount() {
     // when Component did mounted, get the response from API and init the bookshelf.
-    // init the bookshelf.
-    // BooksAPI.getAll().then(data => {
-    //   let books = {
-    //     curentlyReading: [],
-    //     wantToRead: [],
-    //     read: []
-    //   };
-    //   switch() {
-    //     case 1: {
+    
+    BooksAPI.getAll().then(data => {
+      let books = {
+        curentlyReading: [],
+        wantToRead: [],
+        read: []
+      };
+      switch() {
+        case 1: {
 
-    //     }
-    //     break
-    //     case 2: {
+        }
+        break
+        case 2: {
 
-    //     }
-    //     break
-    //     case 3: {
+        }
+        break
+        case 3: {
 
-    //     }
-    //     break
-    //   }
-    //   this.setState({...books})
-    // })
+        }
+        break
+      }
+      this.setState({...books})
+    })
   }
 
   render() {
