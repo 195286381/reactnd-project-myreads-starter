@@ -13,7 +13,7 @@ class Book extends Component {
   }
 
   handleChange(e) {
-    debugger;
+    
     const {book, updateBookState} = this.props
     const shelf = e.target.value
     if (book.shelf !== shelf) {

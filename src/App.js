@@ -10,7 +10,6 @@ class BooksApp extends React.Component {
     super(...arguments)
 
     this.state = {
-        books: [],
         currentlyReading: [],
         wantToRead: [],
         read: []
@@ -22,7 +21,7 @@ class BooksApp extends React.Component {
 
   findBookById(id) {
     var book = null
-    const { books } = this.state
+    const books = [...this.state.currentlyReading, ...this.state.wantToRead, ...this.state.read]
     books.some(bk => {
       if (bk.id === id) {
         book = bk
@@ -34,10 +33,10 @@ class BooksApp extends React.Component {
 
   // update book state when click
   updateBookState(book, shelf) {
-    const { books } = this.state
     const currentlyReading = []
     const wantToRead = []
     const read = []
+    // const books = [...currentlyReading, ...wantToRead, ...read]
 
     BooksAPI
       .update(book, shelf)
@@ -69,7 +68,6 @@ class BooksApp extends React.Component {
     // when Component did mounted, get the response from API and init the bookshelf.
     BooksAPI.getAll().then(data => {
       let books = {
-        books: [],
         currentlyReading: [],
         wantToRead: [],
         read: [],
@@ -93,7 +91,6 @@ class BooksApp extends React.Component {
         }
       })
       this.setState({
-        books: books.books,
         currentlyReading: books.currentlyReading,
         wantToRead: books.wantToRead,
         read: books.read,
@@ -104,7 +101,9 @@ class BooksApp extends React.Component {
 
   render() {
     console.dir(this.state)
-    const {currentlyReading, wantToRead, read, books} = this.state
+    const { currentlyReading, wantToRead, read } = this.state
+    const books = [...currentlyReading, ...wantToRead, ...read]
+    // debugger
     return (
       <Router>
         <div className="app">

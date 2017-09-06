@@ -9,7 +9,7 @@ class Search extends Component {
 
   static propTypes = {
     getSearchResultFn: PropTypes.func,
-    books: PropTypes.object,
+    books: PropTypes.array,
     updateBookState: PropTypes.func,
   }
 
