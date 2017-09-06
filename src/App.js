@@ -21,8 +21,8 @@ class BooksApp extends React.Component {
 
   findBookById(id) {
     var book = null
-    const books = [...this.state.currentlyReading, ...this.state.wantToRead, ...this.state.read]
-    books.some(bk => {
+    const Prevbooks = [...this.state.currentlyReading, ...this.state.wantToRead, ...this.state.read]
+    Prevbooks.some(bk => {
       if (bk.id === id) {
         book = bk
         return true
@@ -33,35 +33,52 @@ class BooksApp extends React.Component {
 
   // update book state when click
   updateBookState(book, shelf) {
-    const currentlyReading = []
-    const wantToRead = []
-    const read = []
-    // const books = [...currentlyReading, ...wantToRead, ...read]
+    const { currentlyReading, wantToRead, read } = this.state;
+    const prevBooks = [...currentlyReading, ...wantToRead, ...read]
+    // judge book is if in bookshelf
+    var isInBookShelf = prevBooks.some(bk => bk.id === book.id )
 
-    BooksAPI
-      .update(book, shelf)
-      .then(res => {
+    if (isInBookShelf) {
+      const currentlyReadingAry = []
+      const wantToReadAry = []
+      const readAry = []
+
+      BooksAPI.update(book, shelf).then(res => {
         if (res) {
           res.currentlyReading.forEach(id => {
             const bk = this.findBookById(id)
-            currentlyReading.push(bk)
+            bk.shelf = 'currentlyReading'
+            currentlyReadingAry.push(bk)
           })
           res.wantToRead.forEach(id => {
             const bk = this.findBookById(id)
-            wantToRead.push(bk)
+            bk.shelf = 'wantToRead'
+            wantToReadAry.push(bk)
           })
           res.read.forEach(id => {
             const bk = this.findBookById(id)
-            read.push(bk)
+            bk.shelf = 'read'
+            readAry.push(bk)
           })
 
           this.setState({
-            currentlyReading: currentlyReading,
-            wantToRead: wantToRead,
-            read: read,
+            currentlyReading: currentlyReadingAry,
+            wantToRead: wantToReadAry,
+            read: readAry,
           })
         }
       })
+    } else {
+      const shelfType = shelf
+      if (shelfType === 'currentlyReading') {
+        this.setState({currentlyReading: [...currentlyReading, book]})
+      } else if (shelfType === 'wantToRead'){
+        this.setState({wantToRead: [...wantToRead, book]})
+      } else if (shelfType === 'read') {
+        this.setState({read: [...read, book]})
+      }
+    }
+    
   }
 
   componentDidMount() {
@@ -119,7 +136,13 @@ class BooksApp extends React.Component {
           } />
           <Route exact path='/search' render={
             () => (
-              <Search books={books} updateBookState={this.updateBookState}/>
+              <Search 
+                books={books} 
+                updateBookState={this.updateBookState} 
+                currentlyReading={currentlyReading}
+                wantToRead={wantToRead}
+                read={read}
+              />
             )
           } />
         </div>
