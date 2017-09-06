@@ -9,24 +9,39 @@ class Search extends Component {
 
   static propTypes = {
     getSearchResultFn: PropTypes.func,
+    books: PropTypes.object,
+    updateBookState: PropTypes.func,
   }
 
   constructor() {
     super(...arguments)
-
     this.state = {
       searchBooks: [],
     }
-
     this.handleInpputChange = this.handleInpputChange.bind(this)
+  }
+
+  modifyBookShelf(book) {
+    const { books } = this.props
+    var shelf = 'none';
+    books.forEach(bk => {
+      if (book.id === bk.id) {
+        shelf = bk.shelf;
+      }
+    })
+    book.shelf = shelf
+    
   }
 
   handleInpputChange(e) {
     const { getSearchResultFn } = this.props
     var query = e.target.value
     
-    BooksAPI.search(query, 10).then(books => {
-      if (!Array.isArray(books)) this.setState({searchBooks: []})
+    BooksAPI.search(query).then(books => {
+      if (!Array.isArray(books)) {
+        this.setState({searchBooks: []})
+        return
+      }
       this.setState({searchBooks: books})
     })
   }
@@ -34,6 +49,7 @@ class Search extends Component {
 
   render() {
     const { searchBooks } = this.state
+    const { updateBookState } = this.props
 
     return (
       <div className="search-books">
@@ -54,11 +70,14 @@ class Search extends Component {
         <div className="search-books-results">
           <ol className="books-grid">
             { 
-              searchBooks.map((book) => (
-                <li key={book.id}>
-                  <Book book={book} />
-                </li>
-              ))
+              searchBooks.map((book) => {
+                this.modifyBookShelf(book)
+                return (
+                  <li key={book.id}>
+                    <Book book={book} updateBookState={updateBookState}/>
+                  </li>
+                )
+              })
             }
           </ol>
         </div>

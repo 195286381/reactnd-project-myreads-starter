@@ -31,9 +31,9 @@ class BooksApp extends React.Component {
     })
     return book;
   }
+
   // update book state when click
   updateBookState(book, shelf) {
-    debugger
     const { books } = this.state
     const currentlyReading = []
     const wantToRead = []
@@ -42,7 +42,6 @@ class BooksApp extends React.Component {
     BooksAPI
       .update(book, shelf)
       .then(res => {
-        debugger
         if (res) {
           res.currentlyReading.forEach(id => {
             const bk = this.findBookById(id)
@@ -93,7 +92,6 @@ class BooksApp extends React.Component {
           }
         }
       })
-      debugger
       this.setState({
         books: books.books,
         currentlyReading: books.currentlyReading,
@@ -106,7 +104,7 @@ class BooksApp extends React.Component {
 
   render() {
     console.dir(this.state)
-    const {currentlyReading, wantToRead, read} = this.state
+    const {currentlyReading, wantToRead, read, books} = this.state
     return (
       <Router>
         <div className="app">
@@ -122,7 +120,7 @@ class BooksApp extends React.Component {
           } />
           <Route exact path='/search' render={
             () => (
-              <Search />
+              <Search books={books} updateBookState={this.updateBookState}/>
             )
           } />
         </div>
