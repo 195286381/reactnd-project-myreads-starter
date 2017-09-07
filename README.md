@@ -1,4 +1,4 @@
-# Xzzzz's Read: A book Lending App
+# Xzzzz's Read: A Book Lending App
 
 A book Lending App fork from [reactnd-project-myreadd-start](https://github.com/195286381/reactnd-project-myreads-starter). It simply manage the book you read, just enjoy it!
 
