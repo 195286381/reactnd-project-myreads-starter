@@ -117,10 +117,8 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    console.dir(this.state)
     const { currentlyReading, wantToRead, read } = this.state
     const books = [...currentlyReading, ...wantToRead, ...read]
-    // debugger
     return (
       <Router>
         <div className="app">
