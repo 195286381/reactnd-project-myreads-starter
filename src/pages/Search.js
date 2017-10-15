@@ -71,6 +71,9 @@ class Search extends Component {
             { 
               searchBooks.map((book) => {
                 this.modifyBookShelf(book)
+                // if (!book.imageLinks.smallThumbnail) {
+                  console.log(book)
+                // }
                 return (
                   <li key={book.id}>
                     <Book book={book} updateBookState={updateBookState}/>
