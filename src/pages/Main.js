@@ -12,10 +12,6 @@ class Main extends Component {
     updateBookState: PropTypes.func,
   }
 
-  constructor() {
-    super(...arguments)
-  }
-
   render() {
     return (
       <div className="list-books">

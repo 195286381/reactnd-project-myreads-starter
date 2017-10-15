@@ -23,10 +23,10 @@ class Search extends Component {
 
   modifyBookShelf(book) {
     const { books } = this.props
-    var shelf = 'none';
+    var shelf = 'none'
     books.forEach(bk => {
       if (book.id === bk.id) {
-        shelf = bk.shelf;
+        shelf = bk.shelf
       }
     })
     book.shelf = shelf
@@ -34,7 +34,6 @@ class Search extends Component {
   }
 
   handleInpputChange(e) {
-    const { getSearchResultFn } = this.props
     var query = e.target.value
     
     BooksAPI.search(query).then(books => {

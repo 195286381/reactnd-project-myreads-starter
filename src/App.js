@@ -22,21 +22,22 @@ class BooksApp extends React.Component {
   findBookById(id) {
     var book = null
     const Prevbooks = [...this.state.currentlyReading, ...this.state.wantToRead, ...this.state.read]
-    Prevbooks.some(bk => {
+    Prevbooks.find(bk => {
       if (bk.id === id) {
         book = bk
         return true
       }
+      return false
     })
-    return book;
+    return book
   }
 
   // update book state when click
   updateBookState(book, shelf) {
-    const { currentlyReading, wantToRead, read } = this.state;
+    const { currentlyReading, wantToRead, read } = this.state
     const prevBooks = [...currentlyReading, ...wantToRead, ...read]
     // judge book is if in bookshelf
-    var isInBookShelf = prevBooks.some(bk => bk.id === book.id )
+    var isInBookShelf = prevBooks.find(bk => bk.id === book.id )
 
     if (isInBookShelf) {
       const currentlyReadingAry = []
@@ -69,14 +70,19 @@ class BooksApp extends React.Component {
         }
       })
     } else {
-      const shelfType = shelf
-      if (shelfType === 'currentlyReading') {
-        this.setState({currentlyReading: [...currentlyReading, book]})
-      } else if (shelfType === 'wantToRead'){
-        this.setState({wantToRead: [...wantToRead, book]})
-      } else if (shelfType === 'read') {
-        this.setState({read: [...read, book]})
-      }
+      // bugFixed: BooksAPI.update even if the book is not in the shelf
+      BooksAPI.update(book, shelf).then(() => {
+          const shelfType = shelf
+          book.shelf = shelfType
+          if (shelfType === 'currentlyReading') {
+            this.setState({currentlyReading: [...currentlyReading, book]})
+          } else if (shelfType === 'wantToRead'){
+            this.setState({wantToRead: [...wantToRead, book]})
+          } else if (shelfType === 'read') {
+            this.setState({read: [...read, book]})
+          }
+        }
+      )
     }
     
   }
@@ -90,21 +96,21 @@ class BooksApp extends React.Component {
         read: [],
       }
 
-      books.books =data;
+      books.books =data
 
       data.forEach(book => {
         switch (book.shelf) {
-          case 'currentlyReading': {
+          case 'currentlyReading':
             books.currentlyReading.push(book)
-          }
-          break
-          case 'wantToRead': {
+            break
+          case 'wantToRead': 
             books.wantToRead.push(book)
-          }
-          break
-          case 'read': {
+            break
+          case 'read': 
             books.read.push(book)
-          }
+            break
+          default:
+            break
         }
       })
       this.setState({
@@ -117,7 +123,6 @@ class BooksApp extends React.Component {
   }
 
   render() {
-    console.dir(this.state)
     const { currentlyReading, wantToRead, read } = this.state
     const books = [...currentlyReading, ...wantToRead, ...read]
     // debugger
